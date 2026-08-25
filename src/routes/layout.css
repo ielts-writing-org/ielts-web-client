@@ -3,3 +3,7 @@
 @plugin 'daisyui' {
     themes: emerald --default;
 }
+
+* {
+    @apply scrollbar-thin;
+}
