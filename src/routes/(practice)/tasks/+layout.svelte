@@ -6,7 +6,6 @@
 	import { EventSourceParserStream } from 'eventsource-parser/stream';
 	import { evaluateTask2 } from './_apis/evaluation-api.svelte';
 	import { setTaskContext, type TaskContext } from './_contexts/task-context';
-	import type { Task2EvaluationCriterion, Task2EvaluationResponse } from '@ielts/shared';
 	import JSONParser from '@streamparser/json/jsonparser.js';
 
 	let { children } = $props();
