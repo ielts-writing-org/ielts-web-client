@@ -8,15 +8,15 @@
 </script>
 
 <div
-	class="min-h-screen w-full bg-[#fbfcff] font-sans text-[#202b40] antialiased [&_button]:!text-[12px] [&_h1]:!text-[18px] [&_h2]:!text-[16px] [&_h3]:!text-[15px] [&_nav_a]:!text-[13px] [&_p]:!text-[12px] [&_small]:!text-[10px] [&_span]:!text-[10px]">
+	class="min-h-screen w-full bg-[#fbfcff] font-sans text-[#202b40] antialiased [&_button]:text-[12px]! [&_h1]:text-[18px]! [&_h2]:text-[16px]! [&_h3]:text-[15px]! [&_nav_a]:text-[13px]! [&_p]:text-[12px]! [&_small]:text-[10px]! [&_span]:text-[10px]!">
 	<header
-		class="flex min-h-[54px] w-full flex-wrap items-center gap-4 border-b border-[#e2e7f1] bg-white px-4 py-2 sm:px-6 lg:flex-nowrap lg:gap-10 lg:px-9">
+		class="flex min-h-13.5 w-full flex-wrap items-center gap-4 border-b border-[#e2e7f1] bg-white px-4 py-2 sm:px-6 lg:flex-nowrap lg:gap-10 lg:px-9">
 		<a
-			class="flex min-w-[116px] items-center gap-2 text-[#202b40] no-underline"
+			class="flex min-w-29 items-center gap-2 text-[#202b40] no-underline"
 			href={resolve('/')}
 			aria-label="LexisWriting home">
 			<span
-				class="grid h-[29px] w-[29px] place-items-center rounded-lg bg-[#5045e8] text-[12px] font-extrabold text-white">
+				class="grid h-7.25 w-7.25 place-items-center rounded-lg bg-[#5045e8] text-[12px] font-extrabold text-white">
 				AI
 			</span>
 			<span class="flex flex-col leading-[1.1] whitespace-nowrap">
@@ -25,7 +25,7 @@
 			</span>
 		</a>
 		<nav
-			class="order-3 flex h-8 w-full items-center justify-between gap-1 lg:order-none lg:h-auto lg:w-auto lg:gap-3"
+			class="order-3 flex h-8 w-full items-center justify-between gap-1 lg:order-0 lg:h-auto lg:w-auto lg:gap-3"
 			aria-label="Main navigation">
 			<a
 				class="rounded-lg bg-[#eef0ff] px-3 py-1.5 text-[12px] font-bold text-[#5045e8] no-underline"
@@ -56,7 +56,7 @@
 				Target: Band 7.5
 			</span>
 			<span
-				class="grid h-[30px] w-[30px] place-items-center rounded-full bg-[#5045e8] text-[11px] text-white">
+				class="grid h-7.5 w-7.5 place-items-center rounded-full bg-[#5045e8] text-[11px] text-white">
 				PT
 			</span>
 		</div>

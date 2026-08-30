@@ -1,9 +1,9 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin 'daisyui' {
-    themes: emerald --default;
+	themes: emerald --default;
 }
 
 * {
-    @apply scrollbar-thin;
+	@apply scrollbar-thin;
 }

@@ -65,7 +65,7 @@
 	];
 
 	const gotoTask2 = () => {
-		goto(resolve(localizeHref('/task/2') as Pathname));
+		goto(resolve(localizeHref('/tasks/2') as Pathname));
 	};
 </script>
 
@@ -76,7 +76,7 @@
 
 <main class="w-full px-3 py-4 sm:px-6 sm:py-6 lg:px-9">
 	<section
-		class="flex min-h-[98px] w-full flex-col items-start justify-between gap-4 rounded-xl border border-[#cbd3ff] bg-white px-4 py-3 sm:flex-row sm:items-center sm:px-5"
+		class="flex min-h-24.5 w-full flex-col items-start justify-between gap-4 rounded-xl border border-[#cbd3ff] bg-white px-4 py-3 sm:flex-row sm:items-center sm:px-5"
 		aria-label="Recommended practice">
 		<div class="min-w-0">
 			<div class="flex flex-wrap items-center gap-2 text-[10px] font-bold text-[#6c7890]">
@@ -97,7 +97,7 @@
 			</p>
 		</div>
 		<button
-			class="inline-flex min-h-[38px] shrink-0 items-center justify-center gap-1 rounded-lg bg-[#5146e8] px-4 text-[11px] font-extrabold text-white">
+			class="inline-flex min-h-9.5 shrink-0 items-center justify-center gap-1 rounded-lg bg-[#5146e8] px-4 text-[11px] font-extrabold text-white">
 			Practice this task <ArrowRight size={15} strokeWidth={2.5} />
 		</button>
 	</section>
@@ -109,7 +109,7 @@
 	<section class="grid w-full grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,1fr)]">
 		<div class="grid grid-cols-1 gap-3.5 md:grid-cols-2">
 			<article
-				class="flex min-h-[300px] flex-col overflow-hidden rounded-xl border border-[#e1e6ef] bg-white p-4">
+				class="flex min-h-75 flex-col overflow-hidden rounded-xl border border-[#e1e6ef] bg-white p-4">
 				<div
 					class="flex justify-between gap-1.5 text-[8px] font-bold whitespace-nowrap text-[#6f7e93]">
 					<span class="rounded bg-[#f0f2ff] px-1.5 py-1 text-[#5861eb]">
@@ -155,12 +155,12 @@
 					</span>
 				</div>
 				<button
-					class="mt-auto inline-flex min-h-[34px] w-full items-center justify-center rounded-lg border-[1.5px] border-[#5b50fa] bg-white px-3 text-[10px] font-extrabold text-[#574cf0]">
+					class="mt-auto inline-flex min-h-8.5 w-full items-center justify-center rounded-lg border-[1.5px] border-[#5b50fa] bg-white px-3 text-[10px] font-extrabold text-[#574cf0]">
 					Start Task 1 Practice
 				</button>
 			</article>
 			<article
-				class="flex min-h-[300px] flex-col overflow-hidden rounded-xl border-2 border-[#5a4ffc] bg-white p-[15px]">
+				class="flex min-h-75 flex-col overflow-hidden rounded-xl border-2 border-[#5a4ffc] bg-white p-3.75">
 				<div
 					class="flex justify-between gap-1.5 text-[8px] font-bold whitespace-nowrap text-[#6f7e93]">
 					<span class="rounded bg-[#f0f2ff] px-1.5 py-1 text-[#5861eb]">
@@ -198,7 +198,7 @@
 					</span>
 				</div>
 				<button
-					class="mt-auto inline-flex min-h-[34px] w-full items-center justify-center gap-1 rounded-lg bg-[#5146e8] px-4 text-[10px] font-extrabold text-white"
+					class="mt-auto inline-flex min-h-8.5 w-full items-center justify-center gap-1 rounded-lg bg-[#5146e8] px-4 text-[10px] font-extrabold text-white"
 					onclick={gotoTask2}>
 					Start Task 2 Practice <ArrowRight size={15} strokeWidth={2.5} />
 				</button>
@@ -231,7 +231,7 @@
 						</strong>
 						<b class={criterion.scoreColor}>{criterion.score}</b>
 					</div>
-					<div class="my-1.5 h-[5px] overflow-hidden rounded bg-[#edf0f5]">
+					<div class="my-1.5 h-1.25 overflow-hidden rounded bg-[#edf0f5]">
 						<span class={`block h-full rounded ${criterion.bar}`}></span>
 					</div>
 					<small class="text-[8px] text-[#8290a4]">{criterion.note}</small>
@@ -255,7 +255,7 @@
 			</div>
 			{#each sessions as session (session.title)}
 				<div
-					class="mt-1.5 grid min-h-[30px] grid-cols-[42px_minmax(0,1fr)_43px] items-center gap-1.5 rounded-md bg-[#f1f4f8] px-2.5 text-[9px] sm:grid-cols-[42px_minmax(170px,1fr)_55px_110px_43px]">
+					class="mt-1.5 grid min-h-7.5 grid-cols-[42px_minmax(0,1fr)_43px] items-center gap-1.5 rounded-md bg-[#f1f4f8] px-2.5 text-[9px] sm:grid-cols-[42px_minmax(170px,1fr)_55px_110px_43px]">
 					<span class="w-fit rounded bg-[#e8eaff] px-1.5 py-1 text-[8px] text-[#5a50eb]">
 						{session.task}
 					</span>
@@ -268,7 +268,7 @@
 				</div>
 			{/each}
 		</div>
-		<div class="relative min-h-[151px] overflow-hidden rounded-xl bg-[#10182e] p-4 text-white">
+		<div class="relative min-h-37.75 overflow-hidden rounded-xl bg-[#10182e] p-4 text-white">
 			<div class="text-[8px] font-extrabold text-[#8293f2]">
 				<MessageCircle size={11} /> CONVERSATIONAL TUTOR
 			</div>
