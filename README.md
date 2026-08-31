@@ -14,9 +14,9 @@ In conclusion, the platform aims to make writing practice more interactive, resp
 
 ## ENVIRONMENT VARIABLES
 
-| VARIABLE                  | VALUE                                         |
-| ------------------------- | --------------------------------------------- |
-| PUBLIC_EVALUATION_API_URL | <http://localhost:8787/api/v1/task2/evaluate> |
+| VARIABLE                  | VALUE                                      |
+| ------------------------- | ------------------------------------------ |
+| PUBLIC_EVALUATION_API_URL | <http://localhost:8787/api/task2/evaluate> |
 
 ## How to run the local development server
 
