@@ -2,11 +2,12 @@
 	import { resolve } from '$app/paths';
 	import type { Pathname } from '$app/types';
 	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
-	import { ArrowLeft, ArrowRight } from '@lucide/svelte';
+	import type { Task2EvaluationCriterion, Task2EvaluationResponse } from '@ielts/shared';
+	import { ArrowLeft, ArrowRight, Moon, Sun } from '@lucide/svelte';
+	import JSONParser from '@streamparser/json/jsonparser.js';
 	import { EventSourceParserStream } from 'eventsource-parser/stream';
 	import { evaluateTask2 } from './_apis/evaluation-api.svelte';
 	import { setTaskContext, type TaskContext } from './_contexts/task-context';
-	import JSONParser from '@streamparser/json/jsonparser.js';
 
 	let { children } = $props();
 	let isEvaluating = $state(false);
@@ -115,6 +116,13 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 			isEvaluating = false;
 		}
 	};
+
+	const changeTheme = (event: ToggleEvent & { currentTarget: EventTarget & HTMLInputElement }) => {
+		document.documentElement.setAttribute(
+			'data-theme',
+			event.currentTarget.checked ? 'light' : event.currentTarget.value
+		);
+	};
 </script>
 
 <header class="navbar sticky top-0 z-50 border-b border-base-300 bg-base-100">
@@ -130,6 +138,14 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 			<h2 class="hidden font-bold lg:block">IELTS Writing Task 2</h2>
 			<h3 class="hidden text-xs lg:block">Write an essay on the given topic</h3>
 		</div>
+	</div>
+
+	<div>
+		<label class="flex cursor-pointer gap-2">
+			<Sun />
+			<input type="checkbox" value="dark" class="theme-controller toggle" ontoggle={changeTheme} />
+			<Moon />
+		</label>
 	</div>
 
 	<div class="navbar-end">

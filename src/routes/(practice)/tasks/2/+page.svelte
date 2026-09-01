@@ -15,10 +15,10 @@
 	<link rel="icon" href="/favicon.svg" />
 </svelte:head>
 
-<main class="flex flex-col gap-4 bg-green-100/20 p-2 md:flex-row">
+<main class="flex flex-col gap-4 p-2 md:flex-row">
 	<section class="flex flex-1 flex-col gap-4 xl:flex-2">
 		<div
-			class="prose flex max-w-none flex-col gap-2 rounded-lg border border-gray-200 bg-white p-2">
+			class="prose flex max-w-none flex-col gap-2 rounded-md border border-base-300 bg-base-100 p-2">
 			<div class="flex items-center justify-between">
 				<div>
 					<Lightbulb size="1em" class="inline text-primary" />
@@ -29,15 +29,15 @@
 				</span>
 			</div>
 			<div
-				class="textarea w-full flex-1 border-none"
+				class="textarea w-full flex-1"
 				spellcheck="false"
 				contenteditable="plaintext-only"
 				bind:innerText={taskContext.task_2.topic}>
 			</div>
 		</div>
 
-		<div class="flex flex-1 flex-col rounded-lg border border-gray-200 bg-white">
-			<div class="prose flex max-w-none flex-1 flex-col gap-2 border-b border-gray-200 p-2">
+		<div class="flex flex-1 flex-col rounded-md border border-base-300 bg-base-100">
+			<div class="prose flex max-w-none flex-1 flex-col gap-2 border-b border-base-300 p-2">
 				<div class="flex items-center justify-between">
 					<div>
 						<Pilcrow size="1em" class="inline align-text-bottom text-primary" />
@@ -46,7 +46,7 @@
 					<span class="text-sm">{stats.words}/250 words</span>
 				</div>
 				<div
-					class="textarea w-full flex-1 border-none"
+					class="textarea w-full flex-1"
 					spellcheck="false"
 					contenteditable="plaintext-only"
 					bind:innerText={taskContext.task_2.response}>
@@ -54,7 +54,7 @@
 			</div>
 
 			<div
-				class="flex flex-wrap gap-x-4 gap-y-2 rounded-b-lg bg-base-200 p-2 text-sm font-semibold">
+				class="flex flex-wrap gap-x-4 gap-y-2 rounded-b-lg bg-base-300 p-2 text-sm font-semibold">
 				<p>Paragraphs: {stats.paragraphs}</p>
 				<p>Sentences: {stats.sentences}</p>
 				<p>Characters: {stats.characters}</p>

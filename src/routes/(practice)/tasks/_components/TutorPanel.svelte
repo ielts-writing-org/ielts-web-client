@@ -54,7 +54,7 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 	</div>
 
 	<div
-		class="flex flex-1 flex-col gap-2 overflow-y-auto rounded-lg border border-gray-200 bg-white p-3">
+		class="flex flex-1 flex-col gap-2 overflow-y-auto rounded-md border border-base-300 bg-base-100 p-3">
 		{#if taskContext.task_2.evaluation_result === undefined}
 			<p class="text-gray-500">No evaluations yet.</p>
 		{:else}
@@ -86,7 +86,7 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 	</div>
 
 	<div
-		class="flex max-h-[50dvh] flex-2 flex-col gap-2 overflow-y-auto rounded-lg border border-gray-200 bg-white p-3 text-sm">
+		class="flex max-h-[50dvh] flex-2 flex-col gap-2 overflow-y-auto rounded-md border border-base-300 bg-base-100 p-3 text-sm">
 		{#if chatContext.length === 0}
 			<p class="text-gray-500">No chats yet.</p>
 		{:else}
