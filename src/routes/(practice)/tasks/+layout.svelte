@@ -12,6 +12,7 @@
 	let { children } = $props();
 	let isEvaluating = $state(false);
 	let evaluationModal: HTMLDialogElement;
+	let modalErrorMessage = $state<string | null>(null);
 
 	const taskContext = $state<TaskContext>({
 		task_2: {
@@ -25,11 +26,8 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 
 	const EMPTY_CRITERION: Task2EvaluationCriterion = {
 		band: null,
-		completion: null,
 		checks: [],
-		evidence: [],
-		strengths: [],
-		limitations: [],
+		problems: [],
 		why_this_band: '',
 		why_not_next_band: null
 	};
@@ -50,8 +48,7 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 
 			const stream = await evaluateTask2({
 				topic: taskContext.task_2.topic,
-				response_text: taskContext.task_2.response,
-				context: { partial_response: true }
+				response_text: taskContext.task_2.response
 			});
 
 			const reader = stream.pipeThrough(new EventSourceParserStream()).getReader();
@@ -67,26 +64,23 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 					lexical_resource: { ...EMPTY_CRITERION },
 					grammatical_range_and_accuracy: { ...EMPTY_CRITERION }
 				},
-				overall_band: null,
-				feedback: { strongest_areas: [], highest_impact_problems: [], next_step: '' }
+				overall_band: null
 			};
 
 			const jsonParser = new JSONParser({
-				paths: ['$.overall_band', '$.feedback', '$.criteria.*']
+				paths: ['$', '$.*', '$.criteria.*']
 			});
 			jsonParser.onValue = ({ key, stack, value }) => {
 				if (!taskContext.task_2.evaluation_result || !value) return;
 
 				switch (stack.length) {
 					case 0:
+						console.log('Root value received:', value);
 						break;
 					case 1:
 						if (key === 'overall_band') {
 							taskContext.task_2.evaluation_result[key] =
 								value as Task2EvaluationResponse['overall_band'];
-						} else if (key === 'feedback') {
-							taskContext.task_2.evaluation_result[key] =
-								value as Task2EvaluationResponse['feedback'];
 						}
 						break;
 					case 2:
@@ -101,6 +95,9 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 			while (true) {
 				const stringRaw = await reader.read();
 				if (stringRaw.done || stringRaw.value.data === '[DONE]') {
+					if (!taskContext.task_2.evaluation_result.overall_band) {
+						throw new Error('Evaluation failed: overall_band is missing in the response.');
+					}
 					break;
 				}
 
@@ -108,9 +105,8 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 				jsonParser.write(data.choices?.[0]?.delta?.content ?? '');
 			}
 		} catch (error) {
-			console.error(
-				`Error during evaluation: ${error instanceof Error ? error.message : String(error)}`
-			);
+			modalErrorMessage = error instanceof Error ? error.message : String(error);
+			console.error(`Error during evaluation: ${modalErrorMessage}`);
 			evaluationModal.showModal();
 		} finally {
 			isEvaluating = false;
@@ -160,7 +156,7 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 <dialog bind:this={evaluationModal} class="modal" id="my_modal_1">
 	<div class="modal-box">
 		<h3 class="text-lg font-bold">Error during evaluation</h3>
-		<p class="py-4">There was an error during the evaluation process.</p>
+		<p class="py-4">{modalErrorMessage ?? 'There was an error during the evaluation process.'}</p>
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">Close</button>

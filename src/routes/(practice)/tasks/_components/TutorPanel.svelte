@@ -48,7 +48,7 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 			{#if overallBand}
 				<p class="badge badge-info">Est. Band {overallBand.toPrecision(2)}</p>
 			{:else}
-				<p class="badge animate-pulse badge-info">Scoring...</p>
+				<p class="badge animate-pulse badge-info">Estimating...</p>
 			{/if}
 		{/if}
 	</div>
@@ -56,11 +56,11 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 	<div
 		class="flex flex-1 flex-col gap-2 overflow-y-auto rounded-md border border-base-300 bg-base-100 p-3">
 		{#if taskContext.task_2.evaluation_result === undefined}
-			<p class="text-gray-500">No evaluations yet.</p>
+			<p class="text-base-content/75">No evaluations yet.</p>
 		{:else}
 			{#each Object.entries(taskContext.task_2.evaluation_result.criteria) as [criterion, evaluation] (criterion)}
-				<div>
-					<div class="flex justify-between font-bold">
+				<details class="collapse-arrow collapse bg-base-100">
+					<summary class="collapse-title cursor-pointer p-0 font-semibold">
 						<p>
 							{criteriaMap[criterion as keyof Task2EvaluationResponse['criteria']] || criterion}
 						</p>
@@ -72,15 +72,53 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 								Band {evaluation.band.toPrecision(2)}
 							</p>
 						{:else}
-							<p class="animate-pulse text-gray-500">Scoring…</p>
+							<p class="animate-pulse text-base-content/75">Analyzing…</p>
 						{/if}
-					</div>
+					</summary>
 					{#if evaluation.why_this_band}
-						<p class="text-sm text-gray-500">{evaluation.why_this_band}</p>
-					{:else}
-						<p class="animate-pulse text-sm text-gray-500">Analyzing…</p>
+						{@const evaluations = evaluation.checks}
+						<div class="collapse-content text-sm">
+							<p class="text-base-content/75">{evaluation.why_this_band}</p>
+							{#if evaluations && evaluations.length > 0}
+								<p class="mt-2 font-semibold text-base-content/75">Checks:</p>
+								<ul class="list pl-6">
+									{#each evaluations as evaluation (evaluation.id)}
+										<li class="list-decimal py-1">
+											<details class="collapse">
+												<summary
+													class="collapse-title flex cursor-pointer flex-col justify-between p-0 sm:flex-row">
+													<span>{evaluation.id}</span>
+													<span
+														class={[
+															'badge badge-sm',
+															{
+																'badge-success': evaluation.status === 'met',
+																'badge-warning': evaluation.status === 'partially_met',
+																'badge-error': evaluation.status === 'not_met',
+																'badge-ghost': evaluation.status === 'not_applicable'
+															}
+														]}>
+														{evaluation.status}
+													</span>
+												</summary>
+												<div class="collapse-content">
+													<p class="text-base-content/75">
+														<span class="font-semibold">Evidence:</span>
+														{evaluation.evidence}
+													</p>
+													<p class="text-base-content/75">
+														<span class="font-semibold">Reason:</span>
+														{evaluation.why}
+													</p>
+												</div>
+											</details>
+										</li>
+									{/each}
+								</ul>
+							{/if}
+						</div>
 					{/if}
-				</div>
+				</details>
 			{/each}
 		{/if}
 	</div>
@@ -88,7 +126,7 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 	<div
 		class="flex max-h-[50dvh] flex-2 flex-col gap-2 overflow-y-auto rounded-md border border-base-300 bg-base-100 p-3 text-sm">
 		{#if chatContext.length === 0}
-			<p class="text-gray-500">No chats yet.</p>
+			<p class="text-base-content/75">No chats yet.</p>
 		{:else}
 			{#each chatContext as chat, index (index)}
 				{#if chat.type === 'content'}
