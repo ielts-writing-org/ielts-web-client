@@ -3,6 +3,7 @@
 	import { Send } from '@lucide/svelte';
 	import { getTaskContext } from '../_contexts/task-context';
 	import { setChatContext, type ChatContext } from '../_contexts/chat-context';
+	import { getHandlerContext } from '../_contexts/handler-context';
 
 	const criteriaMap = {
 		task_response: 'Task Response',
@@ -12,14 +13,14 @@
 	} as const satisfies Record<keyof Task2EvaluationResponse['criteria'], string>;
 
 	const taskContext = getTaskContext();
-	const chatContext = $state<ChatContext>([
+
+	const INITIAL_CHAT_CONTEXT: ChatContext = [
 		{
 			role: 'user',
 			type: 'context',
 			context: {
-				task: 'Should unpaid community service be compulsory in high school? (Work for charities, neighbourhood improvement, sports mentoring). Discuss both views and give your opinion.',
-				response_text: `In recent years, whether high school students should be required to participate in unpaid community work has sparked widespread debate. While some argue that academic focus should remain the sole priority, I firmly agree that mandatory voluntary programmes cultivate crucial civic values, develop practical teamwork abilities, and foster empathy among adolescents.
-First and foremost, engaging in community initiatives exposes adolescents to real-world societal challenges outside the classroom. By assisting local charities, cleaning public parks, or mentoring younger children, pupils gain firsthand awareness of social inequality and civic responsibility.`
+				topic: taskContext.task_2.topic,
+				response_text: taskContext.task_2.response
 			}
 		},
 		{
@@ -33,18 +34,23 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 			content:
 				'To continue your essay, you could elaborate on the benefits of mandatory community service. For instance, you might discuss how it helps students develop essential life skills such as communication, leadership, and problem-solving. Additionally, you could highlight how these experiences can enhance their college applications and future career prospects. Finally, consider addressing potential counterarguments, such as the concern that mandatory service may detract from academic performance, and provide evidence or examples to support your stance.'
 		}
-	]);
+	];
+	const chatContext = $state<ChatContext>(INITIAL_CHAT_CONTEXT);
 	setChatContext(chatContext);
+
+	const handlerContext = getHandlerContext();
+
+	let chatInput = $state<string>('');
 </script>
 
 <aside
 	class="sticky top-[10.5%] flex h-[calc(100dvh-6rem)] flex-1 flex-col gap-4 p-2 xl:top-[9.5%]">
 	<div class="flex justify-between">
 		<div class="flex items-center gap-2">
-			<h3 class="text-xl font-bold">AI Tutor</h3>
+			<h3 class="text-xl font-semibold">AI Tutor</h3>
 		</div>
-		{#if taskContext.task_2.evaluation_result}
-			{@const overallBand = taskContext.task_2.evaluation_result.overall_band}
+		{#if handlerContext.task2EvaluationHandler.result}
+			{@const overallBand = handlerContext.task2EvaluationHandler.result.overall_band}
 			{#if overallBand}
 				<p class="badge badge-info">Est. Band {overallBand.toPrecision(2)}</p>
 			{:else}
@@ -55,10 +61,10 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 
 	<div
 		class="flex flex-1 flex-col gap-2 overflow-y-auto rounded-md border border-base-300 bg-base-100 p-3">
-		{#if taskContext.task_2.evaluation_result === undefined}
+		{#if handlerContext.task2EvaluationHandler.result === undefined}
 			<p class="text-base-content/75">No evaluations yet.</p>
 		{:else}
-			{#each Object.entries(taskContext.task_2.evaluation_result.criteria) as [criterion, evaluation] (criterion)}
+			{#each Object.entries(handlerContext.task2EvaluationHandler.result.criteria) as [criterion, evaluation] (criterion)}
 				<details class="collapse-arrow collapse bg-base-100">
 					<summary class="collapse-title cursor-pointer p-0 font-semibold">
 						<p>
@@ -76,39 +82,67 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 						{/if}
 					</summary>
 					{#if evaluation.why_this_band}
-						{@const evaluations = evaluation.checks}
+						{@const checks = evaluation.checks}
+						{@const problems = evaluation.problems}
+
 						<div class="collapse-content text-sm">
 							<p class="text-base-content/75">{evaluation.why_this_band}</p>
-							{#if evaluations && evaluations.length > 0}
+							{#if checks && checks.length > 0}
 								<p class="mt-2 font-semibold text-base-content/75">Checks:</p>
 								<ul class="list pl-6">
-									{#each evaluations as evaluation (evaluation.id)}
+									{#each checks as check (check.id)}
 										<li class="list-decimal py-1">
 											<details class="collapse">
 												<summary
 													class="collapse-title flex cursor-pointer flex-col justify-between p-0 sm:flex-row">
-													<span>{evaluation.id}</span>
+													<span>{check.id}</span>
 													<span
 														class={[
 															'badge badge-sm',
 															{
-																'badge-success': evaluation.status === 'met',
-																'badge-warning': evaluation.status === 'partially_met',
-																'badge-error': evaluation.status === 'not_met',
-																'badge-ghost': evaluation.status === 'not_applicable'
+																'badge-success': check.status === 'met',
+																'badge-warning': check.status === 'partially_met',
+																'badge-error': check.status === 'not_met',
+																'badge-ghost': check.status === 'not_applicable'
 															}
 														]}>
-														{evaluation.status}
+														{check.status}
 													</span>
 												</summary>
-												<div class="collapse-content">
-													<p class="text-base-content/75">
+												<div class="collapse-content text-base-content/75">
+													<p>
 														<span class="font-semibold">Evidence:</span>
-														{evaluation.evidence}
+														{check.evidence}
 													</p>
-													<p class="text-base-content/75">
+													<p>
 														<span class="font-semibold">Reason:</span>
-														{evaluation.why}
+														{check.why}
+													</p>
+												</div>
+											</details>
+										</li>
+									{/each}
+								</ul>
+							{/if}
+
+							{#if problems && problems.length > 0}
+								<p class="mt-2 font-semibold text-base-content/75">Problems:</p>
+								<ul class="list pl-6">
+									{#each problems as problem (problem.what)}
+										<li class="list-decimal py-1">
+											<details class="collapse">
+												<summary
+													class="collapse-title flex cursor-pointer flex-col justify-between p-0 sm:flex-row">
+													{problem.what}
+												</summary>
+												<div class="collapse-content text-base-content/75">
+													<p>
+														<span class="font-semibold">Evidence:</span>
+														{problem.evidence}
+													</p>
+													<p>
+														<span class="font-semibold">How to:</span>
+														{problem.how_to}
 													</p>
 												</div>
 											</details>
@@ -146,7 +180,11 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 
 	<div class="join">
 		<label class="input join-item flex-1">
-			<input type="email" placeholder="Ask a question about your essay..." required />
+			<input
+				type="email"
+				placeholder="Ask a question about your essay..."
+				required
+				bind:value={chatInput} />
 		</label>
 		<button class="btn join-item btn-primary" type="submit" onclick={() => alert('In Development')}>
 			Send
