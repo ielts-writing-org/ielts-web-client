@@ -1,19 +1,5 @@
+import type { ChatMessage } from '@ielts/shared';
 import { createContext } from 'svelte';
-
-export type ChatMessage =
-	| {
-			role: 'user' | 'assistant';
-			type: 'content';
-			content: string;
-	  }
-	| {
-			role: 'user' | 'assistant';
-			type: 'context';
-			context: {
-				topic: string;
-				response_text: string;
-			};
-	  };
 
 export type ChatContext = ChatMessage[];
 

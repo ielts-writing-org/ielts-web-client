@@ -3,6 +3,7 @@
 	import TasksHeader from './_components/TasksHeader.svelte';
 	import { setHandlerContext } from './_contexts/handler-context';
 	import { setTaskContext, type TaskContext } from './_contexts/task-context';
+	import { Task2ChatHandler } from './_handlers/task2-chat-handler.svelte';
 	import { Task2EvaluationHandler } from './_handlers/task2-evaluation-handler.svelte';
 
 	let { children } = $props();
@@ -22,8 +23,10 @@ First and foremost, engaging in community initiatives exposes adolescents to rea
 	setTaskContext(taskContext);
 
 	const task2Evaluation = new Task2EvaluationHandler();
+	const task2Chat = new Task2ChatHandler();
 	setHandlerContext({
-		task2EvaluationHandler: task2Evaluation
+		task2EvaluationHandler: task2Evaluation,
+		task2ChatHandler: task2Chat
 	});
 </script>
 

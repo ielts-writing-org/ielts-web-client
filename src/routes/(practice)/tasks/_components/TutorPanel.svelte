@@ -22,25 +22,37 @@
 				topic: taskContext.task_2.topic,
 				response_text: taskContext.task_2.response
 			}
-		},
-		{
-			role: 'user',
-			type: 'content',
-			content: 'How should I continue my essay?'
-		},
-		{
-			role: 'assistant',
-			type: 'content',
-			content:
-				'To continue your essay, you could elaborate on the benefits of mandatory community service. For instance, you might discuss how it helps students develop essential life skills such as communication, leadership, and problem-solving. Additionally, you could highlight how these experiences can enhance their college applications and future career prospects. Finally, consider addressing potential counterarguments, such as the concern that mandatory service may detract from academic performance, and provide evidence or examples to support your stance.'
 		}
 	];
 	const chatContext = $state<ChatContext>(INITIAL_CHAT_CONTEXT);
 	setChatContext(chatContext);
 
 	const handlerContext = getHandlerContext();
+	handlerContext.task2ChatHandler.onEnd = (isSuccess) => {
+		if (isSuccess && handlerContext.task2ChatHandler.result) {
+			chatContext.push({
+				role: 'assistant',
+				type: 'content',
+				content: handlerContext.task2ChatHandler.result
+			});
+		}
+	};
 
 	let chatInput = $state<string>('');
+
+	const handleChatSubmit = async () => {
+		if (chatInput.trim() === '') return;
+
+		chatContext.push({
+			role: 'user',
+			type: 'content',
+			content: chatInput
+		});
+
+		chatInput = '';
+
+		await handlerContext.task2ChatHandler.run(chatContext);
+	};
 </script>
 
 <aside
@@ -159,7 +171,7 @@
 
 	<div
 		class="flex max-h-[50dvh] flex-2 flex-col gap-2 overflow-y-auto rounded-md border border-base-300 bg-base-100 p-3 text-sm">
-		{#if chatContext.length === 0}
+		{#if chatContext.length <= 1}
 			<p class="text-base-content/75">No chats yet.</p>
 		{:else}
 			{#each chatContext as chat, index (index)}
@@ -176,9 +188,15 @@
 				{/if}
 			{/each}
 		{/if}
+		{#if handlerContext.task2ChatHandler.result && handlerContext.task2ChatHandler.isRunning}
+			<div class="chat-start chat">
+				<p class="chat-header">AI Tutor</p>
+				<p class="chat-bubble">{handlerContext.task2ChatHandler.result}</p>
+			</div>
+		{/if}
 	</div>
 
-	<div class="join">
+	<form class="join">
 		<label class="input join-item flex-1">
 			<input
 				type="email"
@@ -186,9 +204,13 @@
 				required
 				bind:value={chatInput} />
 		</label>
-		<button class="btn join-item btn-primary" type="submit" onclick={() => alert('In Development')}>
+		<button
+			class="btn join-item btn-primary"
+			type="submit"
+			disabled={handlerContext.task2ChatHandler.isRunning}
+			onclick={handleChatSubmit}>
 			Send
 			<Send size="1em" />
 		</button>
-	</div>
+	</form>
 </aside>
